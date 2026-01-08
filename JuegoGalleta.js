@@ -132,4 +132,23 @@ setInterval(function () {
     puntuacio += poderDeClickAuto
     actualitzarMarcador()
 }, 1000)
+function guardarPartida() {
+    localStorage.setItem('puntuacio', puntuacio)
+    localStorage.setItem('poderDeClick', poderDeClick)
+    localStorage.setItem('poderDeClickAuto', poderDeClickAuto)
+}
+setInterval(function () {
+    guardarPartida()
+    console.log('partida guardada')
+}, 10000);
+function cargarPartida() {
+    puntuacio = Number(localStorage.getItem('puntuacio'))
+    if (Number(localStorage.getItem('poderDeClick' != 0))) {
+        poderDeClick = Number(localStorage.getItem('poderDeClick'))
+    }
+    poderDeClickAuto = Number(localStorage.getItem('poderDeClickAuto'))
+    actualitzarMarcador()
+}
+cargarPartida()
+
 
