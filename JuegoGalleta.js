@@ -24,7 +24,29 @@ let granjaDetrigo = { name: 'granjaDetrigo', costbase: 8000, power: 80, icon: '�
 let fabrica = { name: 'fabrica', costbase: 75000, power: 500, icon: '🏭', cantidad: 0 ,escala: 1.2};
 let plantaIndustrial = { name: 'plantaIndustrial', costbase:500000, power: 4000, icon: '🏰', cantidad: 0,escala: 1.25}
 let listaMejorasAutomaticas = [abuela, horno, granjaDetrigo, fabrica, plantaIndustrial];
+//carga de partida
+function cargarPartida() {
+    const guardado = localStorage.getItem('partidaCookieClicker');
+    if (!guardado) {
+        console.log("Nueva partida detectada. ¡Bienvenido!");
+        return; 
+    }
 
+    try {
+        const datos = JSON.parse(guardado);
+        puntuacio = datos.puntuacio || 0;
+        poderDeClick = datos.poderDeClick || 1;
+        poderDeClickAuto = datos.poderDeClickAuto || 0;
+        listaMejorasManuales = datos.manuales || listaMejorasManuales;
+        listaMejorasAutomaticas = datos.autos || listaMejorasAutomaticas;
+        
+        actualitzarMarcador();
+        console.log("Partida cargada con éxito.");
+    } catch (error) {
+        console.error("Error al leer el guardado:", error);
+    }
+}
+cargarPartida()
 
 // Funció per actualitzar el text del marcador a l'HTML
 function actualitzarMarcador() {
@@ -133,22 +155,20 @@ setInterval(function () {
     actualitzarMarcador()
 }, 1000)
 function guardarPartida() {
-    localStorage.setItem('puntuacio', puntuacio)
-    localStorage.setItem('poderDeClick', poderDeClick)
-    localStorage.setItem('poderDeClickAuto', poderDeClickAuto)
+    const datosParaGuardar = {
+        puntuacio: puntuacio,
+        poderDeClick: poderDeClick,
+        poderDeClickAuto: poderDeClickAuto,
+        manuales: listaMejorasManuales,
+        autos: listaMejorasAutomaticas
+    };
+    
+    localStorage.setItem('partidaCookieClicker', JSON.stringify(datosParaGuardar));
 }
 setInterval(function () {
     guardarPartida()
     console.log('partida guardada')
 }, 10000);
-function cargarPartida() {
-    puntuacio = Number(localStorage.getItem('puntuacio'))
-    if (Number(localStorage.getItem('poderDeClick' != 0))) {
-        poderDeClick = Number(localStorage.getItem('poderDeClick'))
-    }
-    poderDeClickAuto = Number(localStorage.getItem('poderDeClickAuto'))
-    actualitzarMarcador()
-}
-cargarPartida()
+
 
 
